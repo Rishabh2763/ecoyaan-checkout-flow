@@ -3,11 +3,11 @@
 A functional, high-performance 3-step checkout process built with **Next.js 14**, featuring Server-Side Rendering (SSR), global state management, and localized data persistence.
 
 ## 🔗 Project Links
-- **Live Demo:** [[Insert your Vercel URL here](https://ecoyaan-checkout-flow-zeta.vercel.app/)]
-- **Repository:** [Insert your GitHub Repo URL here]
+- **Live Demo:** [[Live Link](https://ecoyaan-checkout-flow-zeta.vercel.app/)]
+- **Repository:** [[Link](https://github.com/Rishabh2763/ecoyaan-checkout-flow.git)]
 
 ## 🛠️ Tech Stack
-- **Framework:** Next.js 14 (App Router)
+- **Framework:** Next.js (App Router)
 - **Language:** TypeScript
 - **State Management:** React Context API
 - **Styling:** Tailwind CSS
@@ -59,25 +59,3 @@ src/lib: Mock data helpers and types.
 
 ---
 
-### One Last Step: The Submission Email
-Since you are ready to wrap this up, here is a professional message you can send to the founder or recruiter:
-
-**Subject:** Submission: Take-Home Assignment - Checkout Flow - [Your Name]
-
-**Hi [Founder/Recruiter Name],**
-
-I’ve completed the checkout flow assignment. It was a great exercise in balancing Next.js Server Components with client-side state management.
-
-**Key features of my implementation:**
-* **SSR Integration:** Used Server Components for the initial cart fetch to ensure fast load times and SEO.
-* **State Management:** Used Context API with a hydration strategy to bridge server data to the client.
-* **Clean UI:** A fully responsive design using Tailwind CSS, optimized for both desktop and mobile.
-
-**Links:**
-* **GitHub Repo:** [Insert Link]
-* **Live Deployment:** [Insert Link]
-
-I look forward to discussing the architectural choices further with you!
-
-Best regards,
-[Your Name]
