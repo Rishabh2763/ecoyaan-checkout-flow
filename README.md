@@ -3,7 +3,7 @@
 A functional, high-performance 3-step checkout process built with **Next.js 14**, featuring Server-Side Rendering (SSR), global state management, and localized data persistence.
 
 ## 🔗 Project Links
-- **Live Demo:** [Insert your Vercel URL here]
+- **Live Demo:** [[Insert your Vercel URL here](https://ecoyaan-checkout-flow-zeta.vercel.app/)]
 - **Repository:** [Insert your GitHub Repo URL here]
 
 ## 🛠️ Tech Stack
