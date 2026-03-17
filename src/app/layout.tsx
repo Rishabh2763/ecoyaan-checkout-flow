@@ -7,6 +7,9 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Ecoyaan Checkout",
   description: "Sustainability made easy",
+  icons: {
+    icon: "/logo.svg", 
+  },
 };
 
 export default function RootLayout({
