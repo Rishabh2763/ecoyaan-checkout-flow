@@ -1,9 +1,9 @@
 import React from "react";
 import Image from "next/image";
-
+import heroImg from "../../../public/modern-green-kitchen-cabinet-ideas.jpg"; // Using a local placeholder image for the hero section
 export default function HeroSection() {
   return (
-    <section className="w-full flex flex-col md:flex-row h-[400px] bg-[#d8e8e3]">
+    <section className="w-full flex flex-col md:flex-row h-[500px] md:h-[600px] bg-[#d8e8e3] relative">
       {/* Left Content Area */}
       <div className="md:w-1/2 p-8 md:p-16 flex flex-col justify-center relative">
         <div className="flex items-center gap-2 mb-8">
@@ -38,8 +38,15 @@ export default function HeroSection() {
       </div>
 
       {/* Right Image Area (Placeholder) */}
-      <div className="md:w-1/2 bg-gray-300 h-full flex items-center justify-center text-gray-500">
-        <p>[ Hero Image Placeholder ]</p>
+      <div className="md:w-1/2 h-full relative overflow-hidden"> {/* Added 'relative' here */}
+        <Image 
+          src={heroImg} 
+          alt="Modern eco-friendly kitchen" 
+          fill
+          priority
+          className="object-cover"
+          placeholder="blur" 
+        />
       </div>
     </section>
   );

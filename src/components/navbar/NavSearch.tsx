@@ -2,7 +2,8 @@ import React from "react";
 
 export default function NavSearch() {
   return (
-    <div className="flex-grow max-w-2xl relative">
+    // Changed "flex-grow" to "w-full" so it expands perfectly on mobile
+    <div className="w-full max-w-2xl relative">
       <div className="relative">
         <span className="absolute inset-y-0 left-0 flex items-center pl-3">
           <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

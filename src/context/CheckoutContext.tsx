@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 // 1. Define our Types
 export interface CartItem {
@@ -28,68 +28,66 @@ interface CheckoutContextType {
   shippingFee: number;
   discount: number;
   grandTotal: number;
-  loading: boolean;
+  loading: boolean; // Brought back for global state!
+  setCartData: (data: any) => void; // Brought back to inject data from the page!
   saveShippingAddress: (address: ShippingAddress) => void;
-  setCartData: (data: any) => void; 
+  updateQuantity: (id: number, newQuantity: number) => void;
+  removeItem: (id: number) => void;
 }
 
-// 2. Helper for Lazy Initialization (Fixes the ESLint warning!)
-const getSavedAddress = (): ShippingAddress | null => {
-  // Ensure we are in the browser before accessing localStorage
-  if (typeof window === "undefined") return null;
-  
-  try {
-    const saved = localStorage.getItem("ecoyaan_address");
-    return saved ? JSON.parse(saved) : null;
-  } catch (error) {
-    console.error("Failed to parse saved address", error);
-    return null;
-  }
-};
-
-// 3. Create Context
+// 2. Create Context
 const CheckoutContext = createContext<CheckoutContextType | undefined>(undefined);
 
-// 4. Create Provider
+// 3. Create Provider (No initialData prop needed here anymore)
 export const CheckoutProvider = ({ children }: { children: React.ReactNode }) => {
-  // Pass the helper function directly to useState. 
-  // This runs ONCE on the very first render, grabbing the address immediately.
-  const [shippingAddress, setShippingAddress] = useState<ShippingAddress | null>(getSavedAddress);
-  
+  const [shippingAddress, setShippingAddress] = useState<ShippingAddress | null>(null);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [subtotal, setSubtotal] = useState(0);
   const [shippingFee, setShippingFee] = useState(0);
   const [discount, setDiscount] = useState(0);
-  const [grandTotal, setGrandTotal] = useState(0);
-  
-  // Start in a loading state. We will set this to false once setCartData runs.
   const [loading, setLoading] = useState(true);
+  const [isMounted, setIsMounted] = useState(false); // FOR HYDRATION FIX
 
-  // Function to receive SSR data from the CartPage and update the state
-  const setCartData = (data: any) => {
-    setCartItems(data.cartItems);
-    setShippingFee(data.shipping_fee);
-    setDiscount(data.discount_applied);
+  // 1. HYDRATION FIX: Wait for mount before showing anything
+  useEffect(() => {
+    setIsMounted(true);
+    try {
+      const saved = localStorage.getItem("ecoyaan_address");
+      if (saved) setShippingAddress(JSON.parse(saved));
+    } catch (e) {
+      console.error("Address parse error", e);
+    }
+  }, []);
 
-    const calculatedSubtotal = data.cartItems.reduce(
-      (acc: number, item: CartItem) => acc + item.product_price * item.quantity, 
-      0
-    );
-    
-    setSubtotal(calculatedSubtotal);
-    setGrandTotal(calculatedSubtotal + data.shipping_fee - data.discount_applied);
-    
-    // Data is fully hydrated, remove the loading state
-    setLoading(false); 
-  };
+  // 2. LOOP FIX: Calculate totals on the fly (Derived State)
+  // This is much faster and safer than using 3 separate setStates
+  const subtotal = cartItems.reduce((acc, item) => acc + item.product_price * item.quantity, 0);
+  const grandTotal = subtotal + shippingFee - discount;
 
-  // Function to save address to both State and LocalStorage
   const saveShippingAddress = (address: ShippingAddress) => {
     setShippingAddress(address);
-    if (typeof window !== "undefined") {
-      localStorage.setItem("ecoyaan_address", JSON.stringify(address));
-    }
+    localStorage.setItem("ecoyaan_address", JSON.stringify(address));
   };
+
+  const setCartData = (data: any) => {
+    // Only update the core "source of truth"
+    setCartItems(data.cartItems || []);
+    setShippingFee(data.shipping_fee || 0);
+    setDiscount(data.discount_applied || 0);
+    setLoading(false);
+  };
+
+  const updateQuantity = (id: number, newQuantity: number) => {
+    setCartItems(prev => prev.map(item => 
+      item.product_id === id ? { ...item, quantity: newQuantity } : item
+    ));
+  };
+
+  const removeItem = (id: number) => {
+    setCartItems(prev => prev.filter(item => item.product_id !== id));
+  };
+
+  // 3. HYDRATION GUARD: Don't render children until client is ready
+  if (!isMounted) return null;
 
   return (
     <CheckoutContext.Provider
@@ -101,8 +99,10 @@ export const CheckoutProvider = ({ children }: { children: React.ReactNode }) =>
         discount,
         grandTotal,
         loading,
-        saveShippingAddress,
         setCartData,
+        saveShippingAddress,
+        updateQuantity,
+        removeItem,
       }}
     >
       {children}
@@ -110,7 +110,7 @@ export const CheckoutProvider = ({ children }: { children: React.ReactNode }) =>
   );
 };
 
-// 5. Custom Hook
+// 4. Custom Hook
 export const useCheckoutData = (): CheckoutContextType => {
   const context = useContext(CheckoutContext);
   if (!context) {
