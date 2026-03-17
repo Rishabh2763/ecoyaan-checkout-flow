@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 export default function HeroSection() {
   return (
@@ -6,12 +7,23 @@ export default function HeroSection() {
       {/* Left Content Area */}
       <div className="md:w-1/2 p-8 md:p-16 flex flex-col justify-center relative">
         <div className="flex items-center gap-2 mb-8">
-            <span className="text-xl">🌱</span>
+            
+            <Image 
+              src="/logo.svg" 
+              alt="Ecoyaan Logo" 
+              width={36} 
+              height={36} 
+              className="flex-shrink-0"
+              priority 
+            />
+            
             <div>
               <h2 className="text-lg font-bold text-[#00875A] leading-tight">Ecoyaan</h2>
-              <p className="text-[10px] text-gray-600">Sustainability made easy</p>
+              {/* Optional: You can change text-gray-600 to text-[#009B8B] to match your NavLogo! */}
+              <p className="text-[10px] text-[#009B8B] font-medium">Sustainability made easy</p>
             </div>
         </div>
+        
         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 max-w-md leading-tight">
           Create a healthier home with our eco-friendly kitchen and homecare products
         </h2>

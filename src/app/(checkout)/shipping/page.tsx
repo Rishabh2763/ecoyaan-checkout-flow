@@ -10,7 +10,7 @@ interface ShippingFormValues {
   fullName: string;
   email: string;
   phone: string;
-  address: string; // <--- ADDED HERE
+  address: string; 
   pinCode: string;
   city: string;
   state: string;
