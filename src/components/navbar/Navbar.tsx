@@ -7,28 +7,28 @@ import NavActions from "./NavActions";
 export default function Navbar() {
   return (
     <header className="bg-white border-b border-gray-200">
-      {/* 1. Changed to w-full for an edge-to-edge layout
-        2. Increased padding (px-6 md:px-12) to give breathing room on the edges 
+      {/* 1. Added flex-wrap so items can drop to a new line if needed
+        2. Added gap-y-4 to give vertical spacing when the search bar drops down
       */}
-      <div className="w-full mx-auto px-6 md:px-12 py-3 flex items-center justify-between border-b border-gray-100">
+      <div className="w-full mx-auto px-4 md:px-12 py-3 flex flex-wrap items-center justify-between gap-y-4">
         
         {/* LEFT COLUMN: Logo */}
-        {/* flex-1 gives it equal width as the right column, justify-start pins it left */}
-        <div className="flex-1 flex justify-start">
+        <div className="flex items-center">
           <NavLogo />
         </div>
 
-        {/* CENTER COLUMN: Location + Search */}
-        {/* flex-[2] makes this middle section wider to accommodate the search bar */}
-        <div className="flex-[2] flex items-center justify-center gap-6">
-          <NavLocation />
-          <NavSearch />
+        {/* RIGHT COLUMN: Actions (Moves to top-right next to Logo on Mobile) */}
+        <div className="flex items-center order-2 md:order-3">
+          <NavActions />
         </div>
 
-        {/* RIGHT COLUMN: Actions */}
-        {/* flex-1 matches the left column, justify-end pins the icons to the far right */}
-        <div className="flex-1 flex justify-end">
-          <NavActions />
+        {/* CENTER COLUMN: Location + Search 
+            Drops to row 2 on mobile (order-3, w-full). 
+            Sits in the middle on desktop (md:order-2, md:flex-1).
+        */}
+        <div className="w-full md:flex-1 md:w-auto flex items-center justify-center gap-6 order-3 md:order-2 md:px-8">
+          <NavLocation />
+          <NavSearch />
         </div>
 
       </div>

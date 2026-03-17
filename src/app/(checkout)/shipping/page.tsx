@@ -4,8 +4,8 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { useCheckoutData } from "@/context/CheckoutContext";
+import InputField from "@/components/shipping/InputField";
 
-// 1. Updated interface to include the address field
 interface ShippingFormValues {
   fullName: string;
   email: string;
@@ -35,130 +35,71 @@ export default function ShippingPage() {
         <h1 className="text-2xl font-bold mb-6 text-gray-800">Delivery Address</h1>
         
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-          {/* Full Name */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-            <input
-              type="text"
-              placeholder="e.g. Jane Doe"
-              {...register("fullName", { required: "Full Name is required" })}
-              className={`w-full p-3 border rounded-md focus:outline-none focus:ring-1 ${
-                errors.fullName ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-[#00875A]"
-              }`}
-            />
-            {errors.fullName && <p className="text-red-500 text-xs mt-1">{errors.fullName.message}</p>}
-          </div>
+          <InputField 
+            label="Full Name" 
+            placeholder="e.g. Jane Doe" 
+            registration={register("fullName", { required: "Full Name is required" })}
+            error={errors.fullName?.message}
+          />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {/* Email */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-              <input
-                type="email"
-                placeholder="jane@example.com"
-                {...register("email", { 
-                  required: "Email is required",
-                  pattern: {
-                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                    message: "Please enter a valid email address"
-                  }
-                })}
-                className={`w-full p-3 border rounded-md focus:outline-none focus:ring-1 ${
-                  errors.email ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-[#00875A]"
-                }`}
-              />
-              {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
-            </div>
-
-            {/* Phone Number */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
-              <input
-                type="text"
-                placeholder="10-digit mobile number"
-                {...register("phone", { 
-                  required: "Phone number is required",
-                  pattern: {
-                    value: /^[0-9]{10}$/,
-                    message: "Please enter a valid 10-digit phone number"
-                  }
-                })}
-                className={`w-full p-3 border rounded-md focus:outline-none focus:ring-1 ${
-                  errors.phone ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-[#00875A]"
-                }`}
-              />
-              {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone.message}</p>}
-            </div>
-          </div>
-
-          {/* NEW: Street Address Textarea */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Flat, House no., Building, Company, Apartment</label>
-            <textarea
-              rows={3}
-              placeholder="e.g. Flat 4B, Green Apartments, 12th Cross Street..."
-              {...register("address", { required: "Street address is required" })}
-              className={`w-full p-3 border rounded-md focus:outline-none focus:ring-1 resize-none ${
-                errors.address ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-[#00875A]"
-              }`}
+            <InputField 
+              label="Email Address" 
+              type="email"
+              placeholder="jane@example.com" 
+              registration={register("email", { 
+                required: "Email is required",
+                pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: "Invalid email" }
+              })}
+              error={errors.email?.message}
             />
-            {errors.address && <p className="text-red-500 text-xs mt-1">{errors.address.message}</p>}
+            <InputField 
+              label="Phone Number" 
+              placeholder="10-digit mobile number" 
+              registration={register("phone", { 
+                required: "Phone is required",
+                pattern: { value: /^[0-9]{10}$/, message: "Must be 10 digits" }
+              })}
+              error={errors.phone?.message}
+            />
           </div>
+
+          <InputField 
+            label="Flat, House no., Building..." 
+            placeholder="e.g. Flat 4B, Green Apartments..." 
+            isTextArea
+            registration={register("address", { required: "Street address is required" })}
+            error={errors.address?.message}
+          />
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {/* PIN Code */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">PIN Code</label>
-              <input
-                type="text"
-                placeholder="6 digits"
-                {...register("pinCode", { 
-                  required: "PIN Code is required",
-                  pattern: {
-                    value: /^[0-9]{6}$/,
-                    message: "Please enter a valid 6-digit PIN code"
-                  }
-                })}
-                className={`w-full p-3 border rounded-md focus:outline-none focus:ring-1 ${
-                  errors.pinCode ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-[#00875A]"
-                }`}
-              />
-              {errors.pinCode && <p className="text-red-500 text-xs mt-1">{errors.pinCode.message}</p>}
-            </div>
-
-            {/* City */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">City</label>
-              <input
-                type="text"
-                placeholder="e.g. Chennai"
-                {...register("city", { required: "City is required" })}
-                className={`w-full p-3 border rounded-md focus:outline-none focus:ring-1 ${
-                  errors.city ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-[#00875A]"
-                }`}
-              />
-              {errors.city && <p className="text-red-500 text-xs mt-1">{errors.city.message}</p>}
-            </div>
-
-            {/* State */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">State</label>
-              <input
-                type="text"
-                placeholder="e.g. Tamil Nadu"
-                {...register("state", { required: "State is required" })}
-                className={`w-full p-3 border rounded-md focus:outline-none focus:ring-1 ${
-                  errors.state ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-[#00875A]"
-                }`}
-              />
-              {errors.state && <p className="text-red-500 text-xs mt-1">{errors.state.message}</p>}
-            </div>
+            <InputField 
+              label="PIN Code" 
+              placeholder="6 digits" 
+              registration={register("pinCode", { 
+                required: "Required",
+                pattern: { value: /^[0-9]{6}$/, message: "Invalid PIN" }
+              })}
+              error={errors.pinCode?.message}
+            />
+            <InputField 
+              label="City" 
+              placeholder="e.g. Chennai" 
+              registration={register("city", { required: "Required" })}
+              error={errors.city?.message}
+            />
+            <InputField 
+              label="State" 
+              placeholder="e.g. Tamil Nadu" 
+              registration={register("state", { required: "Required" })}
+              error={errors.state?.message}
+            />
           </div>
 
           <div className="pt-4">
             <button
               type="submit"
-              className="w-full bg-[#00875A] hover:bg-[#00734d] text-white font-semibold py-3 px-4 rounded-md transition-colors"
+              className="w-full bg-[#00875A] hover:bg-[#00734d] text-white font-semibold py-3 px-4 rounded-md transition-all active:scale-[0.98]"
             >
               Save Address & Continue
             </button>
