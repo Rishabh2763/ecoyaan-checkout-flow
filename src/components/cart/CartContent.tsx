@@ -19,7 +19,7 @@ export default function CartContent() {
     loading 
   } = useCheckoutData();
 
-  // Prevent a hydration flicker while StoreInitializer loads the data
+
   if (loading) {
     return <div className="py-20 text-center text-gray-500">Loading your cart...</div>;
   }
