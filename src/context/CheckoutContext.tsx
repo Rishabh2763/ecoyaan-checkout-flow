@@ -45,9 +45,9 @@ export const CheckoutProvider = ({ children }: { children: React.ReactNode }) =>
   const [shippingFee, setShippingFee] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [isMounted, setIsMounted] = useState(false); // FOR HYDRATION FIX
+  const [isMounted, setIsMounted] = useState(false); 
 
-  // 1. HYDRATION FIX: Wait for mount before showing anything
+
   useEffect(() => {
     setIsMounted(true);
     try {
