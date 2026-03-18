@@ -30,7 +30,7 @@ I wanted to make sure the checkout process was distraction-free and looked great
 ### 3. Managing Cart Data Safely
 Keeping track of the cart data across the app required a careful approach:
 - **Connecting Server & Browser:** Since the initial data loads on the server, I built a small helper component to safely pass that data into the interactive parts of the app without causing React errors.
-- **Calculating Totals on the Fly:** Initially, trying to update the cart quantities and the totals at the same time caused the app to crash (infinite loops). I fixed this by having the app calculate the subtotal dynamically from the cart items, rather than saving the totals as separate state variables.
+- **Calculating Totals:** Initially, trying to update the cart quantities and the totals at the same time caused the app to crash (infinite loops). I fixed this by having the app calculate the subtotal dynamically from the cart items, rather than saving the totals as separate state variables.
 
 ### 4. Handling Forms Efficiently 
 For the shipping and checkout forms, I used React Hook Form:
