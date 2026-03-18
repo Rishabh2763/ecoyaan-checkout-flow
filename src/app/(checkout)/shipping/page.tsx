@@ -20,11 +20,31 @@ export default function ShippingPage() {
   const router = useRouter();
   const { saveShippingAddress, shippingAddress } = useCheckoutData(); 
 
-  const { register, handleSubmit,reset, formState: { errors } } = useForm<ShippingFormValues>({
+  // 1. We added 'watch' to grab the live keystrokes
+  const { register, handleSubmit, reset, watch, formState: { errors } } = useForm<ShippingFormValues>({
     mode: "onTouched",
     defaultValues: shippingAddress || {},
   });
 
+  // 2. This variable now updates every time the user types a single letter
+  const formData = watch(); 
+
+  // 3. THE DEBOUNCE EFFECT (Auto-Save)
+  useEffect(() => {
+    // Start a 500ms stopwatch
+    const timeoutId = setTimeout(() => {
+      // If the form isn't completely empty, save it directly to the "hard drive"
+      if (Object.keys(formData).length > 0) {
+        localStorage.setItem("ecoyaan_address", JSON.stringify(formData));
+      }
+    }, 500);
+
+    // CLEANUP: If the user types another letter before 500ms is up,
+    // React destroys the old stopwatch and starts a new one!
+    return () => clearTimeout(timeoutId);
+  }, [formData]); // <-- Watch list checks for new keystrokes
+
+  // 4. Initial Hydration (Populates form on first load)
   useEffect(() => {
     if (shippingAddress) {
       reset(shippingAddress);
@@ -32,6 +52,7 @@ export default function ShippingPage() {
   }, [shippingAddress, reset]);
 
   const onSubmit = (data: ShippingFormValues) => {
+    // When they click the button, we formally update the global Context state
     saveShippingAddress(data); 
     router.push("/confirm-payment");
   };
