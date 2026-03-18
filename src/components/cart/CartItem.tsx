@@ -16,7 +16,7 @@ interface CartItemProps {
 }
 
 export default function CartItem({ item }: CartItemProps) {
-  // 1. Pull in the update and remove functions from your context
+  // 1. Pull in the update and remove functions from context
   const { updateQuantity, removeItem } = useCheckoutData();
 
   // 2. Create the click handler functions

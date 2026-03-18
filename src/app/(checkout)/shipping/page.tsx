@@ -1,5 +1,5 @@
 "use client";
-
+import { useEffect } from "react";
 import React from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -18,11 +18,18 @@ interface ShippingFormValues {
 
 export default function ShippingPage() {
   const router = useRouter();
-  const { saveShippingAddress } = useCheckoutData(); 
+  const { saveShippingAddress, shippingAddress } = useCheckoutData(); 
 
-  const { register, handleSubmit, formState: { errors } } = useForm<ShippingFormValues>({
+  const { register, handleSubmit,reset, formState: { errors } } = useForm<ShippingFormValues>({
     mode: "onTouched",
+    defaultValues: shippingAddress || {},
   });
+
+  useEffect(() => {
+    if (shippingAddress) {
+      reset(shippingAddress);
+    }
+  }, [shippingAddress, reset]);
 
   const onSubmit = (data: ShippingFormValues) => {
     saveShippingAddress(data); 
