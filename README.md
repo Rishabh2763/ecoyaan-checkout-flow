@@ -1,4 +1,4 @@
-# Ecoyaan Checkout Flow - Take-Home Assignment
+# Ecoyaan Checkout Flow
 
 An attempt at a functional, responsive 3-step checkout process built with **Next.js 16**, exploring Server-Side Rendering (SSR), global state management, and localized data persistence.
 
